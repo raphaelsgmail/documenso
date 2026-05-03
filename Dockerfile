@@ -1,6 +1,8 @@
 FROM ghcr.io/documenso/documenso:latest
 
-# We stay in the default workdir of the image
-# We use npx to ensure the 'turbo' command is found
-# We only start the web app to save memory on the Free Tier
-CMD npx turbo run start --filter=@documenso/web
+# Set the working directory
+WORKDIR /app
+
+# 1. Sync the database using the correct path to the schema
+# 2. Start the web app using the built-in npm script
+CMD npx prisma db push --schema /app/packages/prisma/schema.prisma --accept-data-
