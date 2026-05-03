@@ -1,8 +1,8 @@
 FROM ghcr.io/documenso/documenso:latest
 
-# Ensure we are in the app directory
+# Set the working directory
 WORKDIR /app
 
-# 1. Sync the database (using npx to find prisma)
-# 2. Start ONLY the web app (using npx to find turbo)
-CMD npx prisma db push --schema /app/packages/prisma/schema.prisma --accept-data-loss --skip-generate && npx turbo run start --filter=@documenso/web
+# We know the DB is synced now, so we just start the web app.
+# We use the workspace flag to tell npm exactly which part to run.
+CMD ["npm", "start", "--workspace=@documenso/web"]
