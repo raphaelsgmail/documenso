@@ -2,23 +2,24 @@ services:
   - type: web
     name: documenso
     env: docker
-    plan: free # Free Tier: Sleeps after 15 mins
+    plan: free
     region: oregon
     branch: main
-    healthCheckPath: /health
+    healthCheckPath: /api/health # <--- FIXED: Was /health
     envVars:
       - key: PORT
         value: 3000
-      # We removed the 'fromDatabase' link. You will paste the Supabase URL in the dashboard.
-      - key: DATABASE_URL
-        sync: false 
+      # FIXED: Documenso needs these specific names, not just DATABASE_URL
+      - key: NEXT_PRIVATE_DATABASE_URL 
+        sync: false
+      - key: NEXT_PRIVATE_DIRECT_DATABASE_URL
+        sync: false
       - key: NEXT_PUBLIC_WEBAPP_URL
         sync: false
       - key: NEXTAUTH_URL
         sync: false
       - key: NEXTAUTH_SECRET
         generateValue: true
-      # Email Settings (Still required!)
       - key: SMTP_MAIL_HOST
         sync: false
       - key: SMTP_MAIL_PORT
@@ -29,5 +30,3 @@ services:
         sync: false
       - key: MAIL_FROM
         sync: false
-
-# The 'databases' section is completely removed because we are using Supabase.
