@@ -1,26 +1,8 @@
-# Step 1: Build the application
-FROM node:18-alpine AS build
+FROM ghcr.io/documenso/documenso:latest
 
+# Set the working directory
 WORKDIR /app
 
-# Copy package files and install dependencies
-COPY package*.json ./
-RUN npm install
-
-# Copy the rest of the application code
-COPY . .
-
-# Build the production application
-RUN npm run build
-
-# Step 2: Serve the application with Nginx
-FROM nginx:stable-alpine
-
-# Copy the build output from the previous stage to the Nginx html directory
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Expose port 80
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# 1. We use 'npx prisma db push' to sync the database
+# 2. We use 'node' to start the web server directly using the path inside the image
+CMD npx prisma db push --schema /app/packages/prisma/schema.prisma --accept-data-loss --skip-generate && node apps/web/server.js
