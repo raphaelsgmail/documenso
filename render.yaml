@@ -5,12 +5,14 @@ services:
     plan: free
     region: oregon
     branch: main
-    healthCheckPath: /api/health # <--- FIXED: Was /health
+    # ADD THESE TWO LINES:
+    dockerContext: .
+    dockerfilePath: ./Dockerfile 
+    healthCheckPath: /api/health
     envVars:
       - key: PORT
         value: 3000
-      # FIXED: Documenso needs these specific names, not just DATABASE_URL
-      - key: NEXT_PRIVATE_DATABASE_URL 
+      - key: NEXT_PRIVATE_DATABASE_URL
         sync: false
       - key: NEXT_PRIVATE_DIRECT_DATABASE_URL
         sync: false
@@ -21,7 +23,7 @@ services:
       - key: NEXTAUTH_SECRET
         generateValue: true
       - key: SMTP_MAIL_HOST
-        sync: false
+        value: ://gmail.com
       - key: SMTP_MAIL_PORT
         value: 587
       - key: SMTP_MAIL_USER
