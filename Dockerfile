@@ -1,8 +1,6 @@
 FROM ghcr.io/documenso/documenso:latest
 
-# Set the working directory
-WORKDIR /app
-
-# Start the web app directly using the node command
-# This is the most lightweight way to run on Render Free Tier
-CMD ["node", "apps/web/server.js"]
+# We stay in the default workdir of the image
+# We use npx to ensure the 'turbo' command is found
+# We only start the web app to save memory on the Free Tier
+CMD npx turbo run start --filter=@documenso/web
