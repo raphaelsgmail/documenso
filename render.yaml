@@ -2,24 +2,23 @@ services:
   - type: web
     name: documenso
     env: docker
-    plan: starter # 'starter' or higher is recommended for performance
-    region: oregon # Choose a region close to you
+    plan: free # Free Tier: Sleeps after 15 mins
+    region: oregon
     branch: main
     healthCheckPath: /health
     envVars:
       - key: PORT
         value: 3000
+      # We removed the 'fromDatabase' link. You will paste the Supabase URL in the dashboard.
       - key: DATABASE_URL
-        fromDatabase:
-          name: documenso-db
-          property: connectionString
+        sync: false 
       - key: NEXT_PUBLIC_WEBAPP_URL
-        sync: false # You will manually set this to your Render URL after creation
+        sync: false
       - key: NEXTAUTH_URL
-        sync: false # Same as above, set to your Render URL
+        sync: false
       - key: NEXTAUTH_SECRET
         generateValue: true
-      # Email Settings (Required for auth & sending docs)
+      # Email Settings (Still required!)
       - key: SMTP_MAIL_HOST
         sync: false
       - key: SMTP_MAIL_PORT
@@ -29,11 +28,6 @@ services:
       - key: SMTP_MAIL_PASSWORD
         sync: false
       - key: MAIL_FROM
-        sync: false # e.g., "noreply@yourdomain.com"
+        sync: false
 
-databases:
-  - name: documenso-db
-    plan: starter # 'starter' is good for production-lite; 'free' expires after 90 days
-    databaseName: documenso
-    user: documenso
-
+# The 'databases' section is completely removed because we are using Supabase.
