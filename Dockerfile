@@ -1,7 +1,5 @@
 FROM ghcr.io/documenso/documenso:latest
 
-# Switch to the app directory
-WORKDIR /app
+# Run migrations pointing to the correct schema path, then start
+CMD npx prisma migrate deploy --schema packages/prisma/schema.prisma && npm run start
 
-# Run migrations and then start the server
-CMD npx prisma migrate deploy && npm run start
